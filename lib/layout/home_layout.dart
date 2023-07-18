@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:sqlite/NavBarScreens/archived_tasks.dart';
 import 'package:sqlite/NavBarScreens/tasks.dart';
+
+import '../NavBarScreens/done_tasks.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -13,6 +16,7 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
 
 int currentIndex = 0;
+List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ int currentIndex = 0;
       appBar: AppBar(
 
       ),
-      body: const Tasks(),
+      body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {  },

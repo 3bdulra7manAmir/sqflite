@@ -5,6 +5,8 @@ class DoneTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Center(
+      child: Text("Done Tasks", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)
+      );
   }
 }
