@@ -16,13 +16,16 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
 
 int currentIndex = 0;
+List<Text> appbarText = const [Text("New Tasks"), Text("Done Tasks"), Text("Archived Tasks")];
+//List<String> titles = ["New Tasks","Done Tasks","Archived Tasks"];
 List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        title: appbarText[currentIndex],
+        //title: Text(title[currentIndex]),
       ),
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
