@@ -33,6 +33,22 @@ List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
         onPressed: () async{ 
           // var name = await printName();
           // print(name);
+          // try{
+          //     var name = await printName();
+          //     print(name);
+          //     throw("error");
+          // }catch(error){
+          //   print("error $error");
+          // }
+          // printName().then((value) {
+          //   print(value);
+          //   print("osama");
+          //   throw("errorrrrrrrrrrrrrrrrrr");
+          // }).catchError((error){
+          //   print("error $error");
+          // });
+
+          
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
