@@ -56,7 +56,7 @@ late Database database;
           //   print("error $error");
           // });
 
-          insertToDatabase();
+        insertToDatabase();
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -90,39 +90,36 @@ late Database database;
 // }
 
 void createDatabase() async{
-
-await openDatabase(
-  "todo.db",
-  version: 1,
-  onCreate: (database, version){
-    print("database Created");
-
-    database.execute('CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT, status TEXT)').then((value){
-      print("Table Created");
-    }).catchError((error)
-    {
-      print("Error While Creating Database: $error");
-    });
-
+  database = await openDatabase(
+    "todo.db",
+    version: 1,
+    onCreate: (database, version){
+      print("database Created");
+      database.execute('create table tasks (id INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT, status TEXT)')
+      .then((value){
+        print("Table Created");
+      }).catchError((error)
+      {
+        print("Error While Creating Database: $error");
+      });
   },
   onOpen: (database){
     print("database Opened");
-  },
-  );
-  
+  });
 }
 
-void insertToDatabase(){
-  database.transaction((txn){
-    txn.rawInsert('INSERT INTO tasks(title, date, time, status) VALUES("First Task","02222","891","new")').
-    then((value){
+
+
+void insertToDatabase() async{
+  await database.transaction((txn) async{
+  await txn.rawInsert('INSERT INTO tasks(title, date, time, status) VALUES("FirstgTask","022622","8691","neew")')
+  .then((value){
       print("$value Inserted Successfully");
     }).catchError((error){
       print("Error while Inserting: $error");
     });
-    throw("error"); //me
-  },
-  );
+    //throw("error"); //me
+  });
 }
 
 
