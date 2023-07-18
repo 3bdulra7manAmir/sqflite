@@ -30,7 +30,10 @@ List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {  },
+        onPressed: () async{ 
+          // var name = await printName();
+          // print(name);
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index)
@@ -57,4 +60,9 @@ List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
       ]),
     );
   }
+
+// Future<String> printName() async{
+//   return "Ahmed Ali";
+// }
+
 }
