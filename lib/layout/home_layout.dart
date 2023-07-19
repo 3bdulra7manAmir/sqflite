@@ -21,6 +21,7 @@ List<Text> appbarText = const [Text("New Tasks"), Text("Done Tasks"), Text("Arch
 List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
 
 late Database database;
+var scaffoldKey = GlobalKey<ScaffoldState>();
 
 @override
   void initState() {
@@ -31,6 +32,7 @@ late Database database;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: appbarText[currentIndex],
         //title: Text(title[currentIndex]),
@@ -109,10 +111,9 @@ void createDatabase() async{
 }
 
 
-
 void insertToDatabase() async{
   await database.transaction((txn) async{
-  await txn.rawInsert('INSERT INTO tasks(title, date, time, status) VALUES("FirstgTask","022622","8691","neew")')
+  txn.rawInsert("INSERT INTO tasks(title, date, time, status) VALUES('FirstgTask','022622','8691','neew')")
   .then((value){
       print("$value Inserted Successfully");
     }).catchError((error){
