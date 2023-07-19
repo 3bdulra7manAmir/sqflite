@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqlite/NavBarScreens/archived_tasks.dart';
 import 'package:sqlite/NavBarScreens/tasks.dart';
@@ -113,8 +114,9 @@ var dateController = TextEditingController();
                   // onTap: () {print("time tapped");},
                   onTap: () {showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.parse("2023-07-19"),)
                   .then((value){
-                    print(value);
-                    dateController.text = value.toString();
+                    var date = DateFormat.yMMM().format(value!);
+                    print(date);
+                    dateController.text = date.toString();
                   });
                   },
                 ),
@@ -137,6 +139,12 @@ var dateController = TextEditingController();
           //   )
           // );
           //orrrr
+          insertToDatabase(date: dateController.text,
+          time: timeController.text,
+          title: titleController.text,
+          ).then((value){
+
+          });
         Navigator.pop(context);
         setState(() {
                   icon = Icons.add;
@@ -196,9 +204,13 @@ void createDatabase() async{
 }
 
 
-void insertToDatabase() async{
-  await database.transaction((txn) async{
-  txn.rawInsert("INSERT INTO tasks(title, date, time, status) VALUES('FirstgTask','022622','8691','neew')")
+Future insertToDatabase({
+required String title,
+required String time,
+required String date,
+}) async{
+  return await database.transaction((txn) async{
+  txn.rawInsert("INSERT INTO tasks(title, date, time, status) VALUES('$title','$time','$date','new')")
   .then((value){
       print("$value Inserted Successfully");
     }).catchError((error){
