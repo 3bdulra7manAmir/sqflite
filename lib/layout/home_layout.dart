@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqlite/NavBarScreens/archived_tasks.dart';
 import 'package:sqlite/NavBarScreens/tasks.dart';
+import 'package:sqlite/shared/default_form_field.dart';
 import '../NavBarScreens/done_tasks.dart';
 
 class HomeLayout extends StatefulWidget {
@@ -22,6 +23,15 @@ List<Widget> screens = const [Tasks(), DoneTasks(), ArchivedTasks()];
 
 late Database database;
 var scaffoldKey = GlobalKey<ScaffoldState>();
+var formKey = GlobalKey<FormState>();
+bool isOpened = true;
+bool iconChange = true;
+IconData icon = Icons.edit;
+
+var titleController = TextEditingController();
+var timeController = TextEditingController();
+var dateController = TextEditingController();
+//var 
 
 @override
   void initState() {
@@ -39,8 +49,8 @@ var scaffoldKey = GlobalKey<ScaffoldState>();
       ),
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () async{ 
+        child: Icon(icon),
+        onPressed: (){ 
           // var name = await printName();
           // print(name);
           // try{
@@ -58,7 +68,82 @@ var scaffoldKey = GlobalKey<ScaffoldState>();
           //   print("error $error");
           // });
 
-        insertToDatabase();
+        //insertToDatabase();
+        if(isOpened){
+          scaffoldKey.currentState?.showBottomSheet((context) => 
+            // Container(
+            //   width: double.infinity,
+            //   height: 120.0,
+            //   color: Colors.red,
+            // )
+            Container(
+              color: Colors.grey[200],
+              padding: const EdgeInsets.all(15),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    defaultTextFormField(controller: titleController,
+                    keyboardType: TextInputType.text,
+                    hintText: "Enter Your name Plz",
+                    labelText: "Your name!",
+                    prefixIcon: Icons.title,
+                    onTap: () {print("title tapped");},
+                    ),
+                    const SizedBox(height: 15,),
+                    defaultTextFormField(controller: timeController,
+                    keyboardType: TextInputType.datetime,
+                    labelText: "Task time",
+                    prefixIcon: Icons.watch_later_outlined,
+                    // onTap: () {print("time tapped");},
+                    onTap: () {showTimePicker(context: context, initialTime: TimeOfDay.now())
+                    .then((value){
+                      print(value?.format(context));
+                      var time = value?.format(context);
+                      timeController.text = time.toString();
+                    });
+                    },
+                  ),
+                  const SizedBox(height: 15,),
+                  defaultTextFormField(controller: dateController,
+                  keyboardType: TextInputType.datetime,
+                  labelText: "Task time",
+                  prefixIcon: Icons.calendar_month_outlined,
+                  // onTap: () {print("time tapped");},
+                  onTap: () {showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.parse("2023-07-19"),)
+                  .then((value){
+                    print(value);
+                    dateController.text = value.toString();
+                  });
+                  },
+                ),
+              
+                  ],
+                ),
+              ),
+            )
+          );
+        setState(() {
+          icon = Icons.remove;
+        });
+        isOpened = false;
+        }
+        else{
+          // scaffoldKey.currentState?.showBottomSheet((context) => 
+          //   Container(
+          //     width: 0,
+          //     height: 0,
+          //   )
+          // );
+          //orrrr
+        Navigator.pop(context);
+        setState(() {
+                  icon = Icons.add;
+        });
+        isOpened = true;
+        }
+        
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
