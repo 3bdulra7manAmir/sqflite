@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sqlite/layout/home_layout.dart';
+
+import 'layout/home_layout.dart';
 
 void main() {
   runApp(const MainApp());

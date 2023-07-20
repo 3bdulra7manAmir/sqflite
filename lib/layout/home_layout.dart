@@ -52,7 +52,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         child: Icon(icon),
-        onPressed: () {
+        onPressed: () async{
           // var name = await printName();
           // print(name);
           // try{
@@ -100,9 +100,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           return null;
                         },
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      const SizedBox(height: 15,),
                       defaultTextFormField(
                         controller: timeController,
                         keyboardType: TextInputType.datetime,
@@ -120,27 +118,26 @@ class _HomeLayoutState extends State<HomeLayout> {
                           });
                         }, validate: (value) {},
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      const SizedBox(height: 15,),
                       defaultTextFormField(
                         controller: dateController,
                         keyboardType: TextInputType.datetime,
                         labelText: "Task time",
                         prefixIcon: Icons.calendar_month_outlined,
-                        // onTap: () {print("time tapped");},
-                        onTap: () {
+                        //onTap: () {print("time tapped");},
+                        onTap: (){
                           showDatePicker(
                             context: context,
+                            firstDate: DateTime.parse("1400-01-01"),
+                            lastDate: DateTime.now(),
                             initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.parse("2023-07-19"),
                           ).then((value) {
                             var date = DateFormat.yMMM().format(value!);
                             print(date);
                             dateController.text = date.toString();
                           });
-                        }, validate: (value) {  },
+                        },
+                        validate: (value) {  },
                       ),
                     ],
                   ),
