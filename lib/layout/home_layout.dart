@@ -236,7 +236,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     return await database.transaction((txn) async {
       txn
           .rawInsert(
-              "INSERT INTO tasks(title, date, time, status) VALUES('$title','$time','$date','new')")
+              "INSERT INTO tasks(title, date, time, status) VALUES('$title','$date','$time','new')")
           .then((value) {
         print("$value Inserted Successfully");
       }).catchError((error) {
