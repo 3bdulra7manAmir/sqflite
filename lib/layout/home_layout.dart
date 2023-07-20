@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqlite/NavBarScreens/archived_tasks.dart';
 import 'package:sqlite/NavBarScreens/tasks.dart';
-import 'package:sqlite/shared/default_form_field.dart';
+import 'package:sqlite/shared/default_formfield_dgn.dart';
 import '../NavBarScreens/done_tasks.dart';
+import '../constance/const.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -49,7 +50,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         title: appbarText[currentIndex],
         //title: Text(title[currentIndex]),
       ),
-      body: screens[currentIndex],
+      body: tasks.isEmpty ? const Center(child: CircularProgressIndicator()) : screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         child: Icon(icon),
         onPressed: () async{
@@ -72,6 +73,9 @@ class _HomeLayoutState extends State<HomeLayout> {
 
           //insertToDatabase();
           if (isOpened) {
+            // if(formKey.currentState?.validate() != null && formKey.currentState!.validate()){
+
+            // }
             scaffoldKey.currentState?.showBottomSheet(
               (context) =>
                   // Container(
@@ -90,13 +94,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                       defaultTextFormField(
                         controller: titleController,
                         keyboardType: TextInputType.text,
-                        placeHolderText: "Enter Your name Plz",
-                        labelText: "Your name!",
+                        placeHolderText: "Enter Title Plz",
+                        labelText: "Task Title",
                         prefixIcon: Icons.title,
                         onTap: () {
                           print("title tapped");
                         }, validate: (value) { 
-                          if(value.toString().isEmpty){return 'Name must not be empty';}
+                          if(value.toString().isEmpty){return 'Title must not be empty';}
                           return null;
                         },
                       ),
@@ -122,7 +126,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                       defaultTextFormField(
                         controller: dateController,
                         keyboardType: TextInputType.datetime,
-                        labelText: "Task time",
+                        labelText: "Task Date",
                         prefixIcon: Icons.calendar_month_outlined,
                         //onTap: () {print("time tapped");},
                         onTap: (){
@@ -149,7 +153,8 @@ class _HomeLayoutState extends State<HomeLayout> {
               icon = Icons.remove;
             });
             isOpened = false;
-          } else {
+          }
+          else {
             // scaffoldKey.currentState?.showBottomSheet((context) =>
             //   Container(
             //     width: 0,
@@ -213,6 +218,12 @@ class _HomeLayoutState extends State<HomeLayout> {
         print("Error While Creating Database: $error");
       });
     }, onOpen: (database) {
+      getDataFromDataBase(database).then((value){
+        setState(() {
+          tasks = value;
+        });
+        print(tasks);
+      });
       print("database Opened");
     });
   }
@@ -233,5 +244,10 @@ class _HomeLayoutState extends State<HomeLayout> {
       });
       //throw("error"); //me
     });
+  }
+
+  Future<List<Map>> getDataFromDataBase(database) async{
+    return await database.rawQuery("SELECT * FROM tasks");
+    //print(tasks);
   }
 }
