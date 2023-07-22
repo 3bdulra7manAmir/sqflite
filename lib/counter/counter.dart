@@ -22,9 +22,9 @@ class _CounterState extends State<Counter> {
       create: (BuildContext context) => CounterCubit(),
       child: BlocConsumer<CounterCubit, CounterStates>(
         listener: (context, state) {
-          if(state is CounterInitialState) print("Inital State");
-          if(state is CounterMinusState) print("Minus State: ${state.counter}");
-          if(state is CounterPlusState) print("Plus State: ${state.counter}");
+          //if(state is CounterInitialState) print("Inital State");
+          //if(state is CounterMinusState) print("Minus State: ${state.counter}");
+          //if(state is CounterPlusState) print("Plus State: ${state.counter}");
           
         },
         builder: (context, state) {
